@@ -81,7 +81,7 @@ public IActionResult Post([FromBody] Customer customer)
             {
                 return BadRequest(ModelState);
             }
-//adding to a cstomer collection- not saving it yet!//
+//adding to a customer collection- not saving it yet!//
             context.Customer.Add(customer);
             try
             {
