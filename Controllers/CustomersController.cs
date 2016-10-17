@@ -21,12 +21,12 @@ namespace Bangazon_API.Controllers
             context = ctx;
         }
 
-        // GET api/values
+        // GET api/values////////////////////////////////////////////////////////////////
         [HttpGet]
         
          public IActionResult Get()
         {
-            //in English, this means to select EVERYTHING from the customer table//
+            //in English, this means to select EVERYTHING (all rows) from the customer table.  This is an example of LINC language, and it is the reverse of SQL//
             IQueryable<object> customers = from customer in context.Customer select customer;
 
             if (customers == null)
@@ -63,16 +63,9 @@ namespace Bangazon_API.Controllers
             }
 
         }
-        //replaced per Steve with above code://
-        // // GET api/values/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return "value";
-        // }
 
 
-        // POST api/values
+        // POST api/values////////////////////////////////////////////////////////////////
         [HttpPost]
 public IActionResult Post([FromBody] Customer customer)
         {
@@ -107,17 +100,66 @@ public IActionResult Post([FromBody] Customer customer)
             return context.Customer.Count(e => e.CustomerId == id) > 0;
         }
 
-        // PUT api/values/5
+        // PUT api/values/5 (this is to be written!)//////////////////////////////////////////////
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+
+
+
+
+
         }
 
-        // DELETE api/values/5
+// example of [PUT]from Microsoft
+// [HttpPut("{id}")]
+// public IActionResult Update(string id, [FromBody] TodoItem item)
+// {
+//     if (item == null || item.Key != id)
+//     {
+//         return BadRequest();
+//     }
+
+//     var todo = TodoItems.Find(id);
+//     if (todo == null)
+//     {
+//         return NotFound();
+//     }
+
+//     TodoItems.Update(item);
+//     return new NoContentResult();
+// }
+
+
+
+        // DELETE api/values/5 (this is to be written!)/////////////////////////
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
+
+
+
+
+            
         }
+
+//example of [Delete] from Microsoft.////////////
+// [HttpDelete("{id}")]
+// public IActionResult Delete(string id)
+// {
+//     var todo = TodoItems.Find(id);
+//     if (todo == null)
+//     {
+//         return NotFound();
+//     }
+
+//     TodoItems.Remove(id);
+//     return new NoContentResult();
+// }
+
+
+
     }
 }
    
