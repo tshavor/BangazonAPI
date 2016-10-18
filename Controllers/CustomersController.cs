@@ -94,12 +94,6 @@ public IActionResult Post([FromBody] Customer customer)
 
             return CreatedAtRoute("GetCustomer", new { id = customer.CustomerId }, customer);
         }
-
-        private bool CustomerExists(int id)
-        {
-            return context.Customer.Count(e => e.CustomerId == id) > 0;
-        }
-
         // PUT customers/5 (this is to be written!)//////////////////////////////////////////////
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Customer customer)
@@ -125,25 +119,29 @@ public IActionResult Post([FromBody] Customer customer)
         // DELETE api/values/5 (this is to be written!)//////////////////////////////////
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-           {
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-  
-           }
+            //this is performing a for-each loop on Orderid that's equal to that id thats ben deleted..
+            Customer customer = context.Customer.Single(m => m.CustomerId == id);
 
-//example of [Delete] from Microsoft.////////////
-// [HttpDelete("{id}")]
-// public IActionResult Delete(string id)
-// {
-//     var todo = TodoItems.Find(id);
-//     if (todo == null)
-//     {
-//         return NotFound();
-//     }
+            if (customer == null)
+            {
+                return NotFound();
+            }
 
-//     TodoItems.Remove(id);
-//     return new NoContentResult();
-// }
+            context.Customer.Remove(customer);
+            context.SaveChanges();
 
+            return Ok(customer);
+        }
+        private bool CustomerExists(int id)
+        {
+            return context.Order.Count(e => e.OrderId == id) > 0;
+        }
 
 
     }

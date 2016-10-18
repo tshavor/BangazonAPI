@@ -93,12 +93,6 @@ public IActionResult Post([FromBody] Product product)
 
             return CreatedAtRoute("GetProduct", new { id = product.ProductId }, product);
         }
-
-        private bool ProductExists(int id)
-        {
-            return context.Product.Count(e => e.ProductId == id) > 0;
-        }
-
         // PUT api/values/5//////////////////////////////////////////////////////////////
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Product product)
@@ -122,11 +116,29 @@ public IActionResult Post([FromBody] Product product)
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            //this is performing a for-each loop on Orderid that's equal to that id thats ben deleted..
+            Product product = context.Product.Single(m => m.ProductId == id);
 
+            if (product == null)
+            {
+                return NotFound();
+            }
 
+            context.Product.Remove(product);
+            context.SaveChanges();
 
+            return Ok(product);
         }
+        private bool ProductExists(int id)
+        {
+            return context.Product.Count(e => e.ProductId == id) > 0;
+        }
+
     }
 }
    
