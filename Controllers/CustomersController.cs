@@ -21,12 +21,12 @@ namespace Bangazon_API.Controllers
             context = ctx;
         }
 
-        // GET api/values
+        // GET api/values////////////////////////////////////////////////////////////////
         [HttpGet]
         
          public IActionResult Get()
         {
-            //in English, this means to select EVERYTHING from the customer table//
+            //in English, this means to select EVERYTHING (all rows) from the customer table.  This is an example of LINC language, and it is the reverse of SQL//
             IQueryable<object> customers = from customer in context.Customer select customer;
 
             if (customers == null)
@@ -63,16 +63,9 @@ namespace Bangazon_API.Controllers
             }
 
         }
-        //replaced per Steve with above code://
-        // // GET api/values/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return "value";
-        // }
 
 
-        // POST api/values
+        // POST api/values////////////////////////////////////////////////////////////////
         [HttpPost]
 public IActionResult Post([FromBody] Customer customer)
         {
@@ -107,17 +100,52 @@ public IActionResult Post([FromBody] Customer customer)
             return context.Customer.Count(e => e.CustomerId == id) > 0;
         }
 
-        // PUT api/values/5
+        // PUT customers/5 (this is to be written!)//////////////////////////////////////////////
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Customer customer)
         {
+    //Explanation: (1) the customer can't be null, (2) the customer id in the PUT request must match the Id in the URL, 
+    // and (3) the customer must be a valid customer.../// 
+            if (customer == null || customer.CustomerId != id || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+// now, I need to write something that replaces the information in the database with the information sent in the PUT request///
+            else
+            {
+                //context is the database structure in memory (also caled db context)//
+                context.Entry(customer).State= EntityState.Modified;
+                //context.Customer.Update();//modifies only the changed files.
+                context.SaveChanges();
+            }
+//last, I need to send some sort of success message so that the sender knows that their PUT request was successful..///
+                return Ok(customer);
         }
 
-        // DELETE api/values/5
+        // DELETE api/values/5 (this is to be written!)/////////////////////////
         [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        public IActionResult Delete(int id)
+           {
+
+  
+           }
+
+//example of [Delete] from Microsoft.////////////
+// [HttpDelete("{id}")]
+// public IActionResult Delete(string id)
+// {
+//     var todo = TodoItems.Find(id);
+//     if (todo == null)
+//     {
+//         return NotFound();
+//     }
+
+//     TodoItems.Remove(id);
+//     return new NoContentResult();
+// }
+
+
+
     }
 }
    
