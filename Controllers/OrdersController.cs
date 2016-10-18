@@ -103,22 +103,52 @@ public IActionResult Post([FromBody] Order order)
             return CreatedAtRoute("GetCustomer", new { id = order.OrderId }, order);
         }
 
+        // PUT api/values/5///////////////////////////////////////////////////////
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Order order)
+        {
+            if (order == null || order.OrderId != id || !ModelState.IsValid)
+            
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                context.Entry(order).State= EntityState.Modified;
+                context.SaveChanges();
+            }
+
+                return Ok(order);
+        }
+
+        // DELETE api/values/5///////////////////////////////////////////////////
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //this is performing a for-each loop on Orderid that's equal to that id thats ben deleted..
+            Order order = context.Order.Single(m => m.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            context.Order.Remove(order);
+            context.SaveChanges();
+
+            return Ok(order);
+        }
         private bool OrderExists(int id)
         {
             return context.Order.Count(e => e.OrderId == id) > 0;
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
-}
+
    
