@@ -100,49 +100,35 @@ public IActionResult Post([FromBody] Customer customer)
             return context.Customer.Count(e => e.CustomerId == id) > 0;
         }
 
-        // PUT api/values/5 (this is to be written!)//////////////////////////////////////////////
+        // PUT customers/5 (this is to be written!)//////////////////////////////////////////////
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Customer customer)
         {
-
-
-
-
-
+    //Explanation: (1) the customer can't be null, (2) the customer id in the PUT request must match the Id in the URL, 
+    // and (3) the customer must be a valid customer.../// 
+            if (customer == null || customer.CustomerId != id || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+// now, I need to write something that replaces the information in the database with the information sent in the PUT request///
+            else
+            {
+                //context is the database structure in memory (also caled db context)//
+                context.Entry(customer).State= EntityState.Modified;
+                //context.Customer.Update();//modifies only the changed files.
+                context.SaveChanges();
+            }
+//last, I need to send some sort of success message so that the sender knows that their PUT request was successful..///
+                return Ok(customer);
         }
-
-// example of [PUT]from Microsoft
-// [HttpPut("{id}")]
-// public IActionResult Update(string id, [FromBody] TodoItem item)
-// {
-//     if (item == null || item.Key != id)
-//     {
-//         return BadRequest();
-//     }
-
-//     var todo = TodoItems.Find(id);
-//     if (todo == null)
-//     {
-//         return NotFound();
-//     }
-
-//     TodoItems.Update(item);
-//     return new NoContentResult();
-// }
-
-
 
         // DELETE api/values/5 (this is to be written!)/////////////////////////
         [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+        public IActionResult Delete(int id)
+           {
 
-
-
-
-
-            
-        }
+  
+           }
 
 //example of [Delete] from Microsoft.////////////
 // [HttpDelete("{id}")]
