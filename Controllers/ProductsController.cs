@@ -63,15 +63,7 @@ namespace Bangazon_API.Controllers
             }
 
         }
-        //replaced per Steve with above code://
-        // // GET api/values/5
-        // [HttpGet("{id}")]
-        // public string Get(int id)
-        // {
-        //     return "value";
-        // }
-
-
+        
         // POST api/values
         [HttpPost]
 public IActionResult Post([FromBody] Product product)
@@ -107,16 +99,33 @@ public IActionResult Post([FromBody] Product product)
             return context.Product.Count(e => e.ProductId == id) > 0;
         }
 
-        // PUT api/values/5
+        // PUT api/values/5//////////////////////////////////////////////////////////////
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Product product)
         {
+            if (product == null || product.ProductId != id || !ModelState.IsValid)
+            
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                context.Entry(product).State= EntityState.Modified;
+                context.SaveChanges();
+            }
+
+                return Ok(product);
         }
 
-        // DELETE api/values/5
+
+        // DELETE api/values/5/////////////////////////////////////////////////////////
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+
+
+
+
         }
     }
 }

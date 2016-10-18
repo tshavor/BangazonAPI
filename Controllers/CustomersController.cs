@@ -122,7 +122,7 @@ public IActionResult Post([FromBody] Customer customer)
                 return Ok(customer);
         }
 
-        // DELETE api/values/5 (this is to be written!)/////////////////////////
+        // DELETE api/values/5 (this is to be written!)//////////////////////////////////
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
            {

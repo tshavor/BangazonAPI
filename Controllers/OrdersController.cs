@@ -108,16 +108,33 @@ public IActionResult Post([FromBody] Order order)
             return context.Order.Count(e => e.OrderId == id) > 0;
         }
 
-        // PUT api/values/5
+        // PUT api/values/5///////////////////////////////////////////////////////
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Order order)
         {
+            if (order == null || order.OrderId != id || !ModelState.IsValid)
+            
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                context.Entry(order).State= EntityState.Modified;
+                context.SaveChanges();
+            }
+
+                return Ok(order);
         }
 
-        // DELETE api/values/5
+        // DELETE api/values/5///////////////////////////////////////////////////
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
+
+
+
+
         }
     }
 }
